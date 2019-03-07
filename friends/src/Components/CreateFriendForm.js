@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { createFriends } from '../Actions/index';
 
 class CreateFriendForm extends React.Component {
 	constructor(props) {
@@ -17,12 +18,25 @@ class CreateFriendForm extends React.Component {
 		this.setState({ friend: { ...this.state.friend, [event.target.name]: event.target.value } });
 	};
 
+	createFriend = (event) => {
+		event.preventDefault();
+		this.props.createFriends(this.state.friend);
+		this.setState({
+			friend: {
+				name: '',
+				email: '',
+				age: ''
+			}
+		});
+	};
+
 	render() {
 		return (
 			<div>
-				<form>
+				<form onSubmit={this.createFriend}>
 					<input onChange={this.inputHandler} placeholder="name" value={this.state.name} name="name" />
 					<input onChange={this.inputHandler} placeholder="email" value={this.state.email} name="email" />
+					<input onChange={this.inputHandler} placeholder="age" value={this.state.age} name="age" />
 					<button type="submit">Add Friend</button>
 				</form>
 			</div>
@@ -30,4 +44,4 @@ class CreateFriendForm extends React.Component {
 	}
 }
 
-export default connect(null)(CreateFriendForm);
+export default connect(null, { createFriends })(CreateFriendForm);
